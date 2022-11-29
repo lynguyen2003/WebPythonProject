@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from Item.models import Item
 
 
 class OrderItem(models.Model):
