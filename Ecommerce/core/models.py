@@ -10,6 +10,7 @@ class Item(models.Model):
     discount_price = models.FloatField(blank=True, null=True)
     slug = models.SlugField()
     description = models.TextField()
+
     
 
     def __str__(self):
@@ -20,6 +21,11 @@ class Item(models.Model):
             'slug': self.slug
         })
 
+    def get_add_to_cart_url(self):
+        return reverse("core:add-to-cart", kwargs={
+            'slug': self.slug
+        })
+        
 
 class OrderItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
