@@ -15,6 +15,9 @@ def products(request):
 def checkout(request):
     return render(request, "checkout.html")
 
+def cart(request):
+    return render(request, "cart.html")
+
 class HomeView(ListView):
     model = Item
     template_name = "home.html"
