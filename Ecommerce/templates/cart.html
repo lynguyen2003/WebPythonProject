@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<body>
+    <div class="wrapper">
+        <h1>Shopping Cart</h1>
+        <div class="project">
+            <div class="shop">
+                <div class="box">
+                    <img src="1.jpg" alt="">
+                    <div class="content">
+                        <h3>Shirt</h3>
+                        <h4>Price: 100$</h4>
+                        <p class="unit">Quantity: <input value="2"></p>
+                        <p class="btn-area">
+                            <i class="fa fa-trash"></i>
+                            <span class="btn2">Remove</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="2.jpg" alt="">
+                    <div class="content">
+                        <h3>Shirt2</h3>
+                        <h4>Price: 100$</h4>
+                        <p class="unit">Quantity: <input value="1"></p>
+                        <p class="btn-area">
+                            <i class="fa fa-trash"></i>
+                            <span class="btn2">Remove</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="box">
+                    <img src="3.jpg" alt="">
+                    <div class="content">
+                        <h3>Shirt3</h3>
+                        <h4>Price: 100$</h4>
+                        <p class="unit">Quantity: <input value="0"></p>
+                        <p class="btn-area">
+                            <i class="fa fa-trash"></i>
+                            <span class="btn2">Remove</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-bar">
+                <p><span>Subtotal</span> <span>$100</span></p>
+                <hr>
+                <p><span>Tax (5%)</span> <span>$6</span></p>
+                <hr>
+                <p><span>Shipping</span> <span>$15</span></p>
+                <hr>
+                <p><span>Total</span> <span>$121</span></p>
+            </div>
+        </div>
+    </div>
+</body>
