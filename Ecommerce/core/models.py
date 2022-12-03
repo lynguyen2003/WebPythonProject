@@ -25,11 +25,6 @@ class Item(models.Model):
         return reverse("core:add-to-cart", kwargs={
             'slug': self.slug
         })
-    
-    def get_remove_from_cart_url(self):
-        return reverse("core:remove-from-cart", kwargs={
-            'slug': self.slug
-        })
 
         
 
@@ -41,7 +36,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} of {self.item.title}"
+        return f"{self.item.title}"
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -54,13 +49,5 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
-
-    def get_total(self):
-        total = 0
-        for order_item in self.items.all():
-            total += order_item.get_final_price()
-        if self.coupon:
-            total -= self.coupon.amount
-        return total
 
     
