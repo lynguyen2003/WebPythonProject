@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -136,3 +135,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+
