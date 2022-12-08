@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.shortcuts import redirect
 from django.utils import timezone
-from core.models import Item, OrderItem, Order
+from Ecommerce.core.models import BillingAddress
+from .forms import CheckoutForm
+from core.models import Item, OrderItem, Order, 
 
 def products(request):
     context = {
@@ -12,8 +14,47 @@ def products(request):
     return render(request, "products.html", context)
 
 
-def checkout(request):
-    return render(request, "checkout.html")
+class CheckoutView(View):
+    def get(self, *args, **kwargs):
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, "checkout.html", context)
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            if form.is_valid():
+                street_address = form.cleaned_data.get('street_address')
+                apartment_address = form.cleaned_data.get('apartment_address')
+                country = form.cleaned_data.get('country')
+                zip = form.cleaned_data.get('zip')
+               # TODO: add functionality for these fields 
+               # same_shipping_address = form.cleaned_data.get('same_shipping_address')
+               # save_info = form.cleaned_data.get('save_info')
+                payment_option = form.cleaned_data.get('payment_option')
+                billing_address = BillingAddress(
+                user=self.request.user,
+                street_address = street_address
+                apartment_address = apartment_address
+                country = country,
+                zip = zip
+            )
+                billing_address.save()
+                order.billing_address = billing_address
+                order.save()
+               # TODO: add redirect to the selected payment option 
+                return redirect('core:checkout')
+            messages.warning(self.request, "Failed checkout")
+            return redirect('core:checkout')
+        except ObjectDoesNotExist:
+            messages.error(self.request, "You do not have an active order")
+            return redirect("core:order-summary")
+
+
+
 
 def cart(request):
     return render(request, "cart.html")
