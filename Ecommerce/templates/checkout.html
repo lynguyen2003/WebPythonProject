@@ -3,7 +3,7 @@
 
 {% block content %}
 
-  <main >
+  <main>
     <div class="container wow fadeIn">
 
       <!-- Heading -->
@@ -32,14 +32,14 @@
               <div class="md-form mb-5">
                {% comment%} <input type="text" id="address" class="form-control" placeholder="1234 Main St"> {% endcomment%}
                 {{ form.street_address }}
-                <label for="address" class="">Address</label>
+                <label for="address" style="top:-35px">Address</label>
               </div>
 
               <!--address-2-->
               <div class="md-form mb-5">
                {%comment%} <input type="text" id="address-2" class="form-control" placeholder="Apartment or suite"> {%endcomment%}
                 {{form.apartment_address }}
-                <label for="address-2" class="">Address 2 (optional)</label>
+                <label for="address-2" style="top:-35px">Address 2 (optional)</label>
               </div>
 
               <!--Grid row-->
@@ -80,24 +80,24 @@
               <hr>
 
               <div class="custom-control custom-checkbox">
-                <input {% if form.same_shipping_address.value %}checked{% endif %} type="checkbox" class="custom-control-input" name="same_billing_address" id="same-address">{{ form.same_billing_address }}
+                <input {% if form.same_shipping_address.value %}checked{% endif %} type="checkbox" class="custom-control-input" name="same_billing_address" id="same-address">
                 <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
               </div>
               <div class="custom-control custom-checkbox">
-                <input {% if form.save_info.value %}checked{% endif %} type="checkbox" class="custom-control-input" name="save-info"  id="save-info">{{ form.save_info }}
+                <input {% if form.save_info.value %}checked{% endif %} type="checkbox" class="custom-control-input" name="save-info"  id="save-info">
                 <label class="custom-control-label" for="save-info">Save this information for next time</label>
               </div>
 
               <hr>
 
               <div class="d-block my-3">
-                {% for value, text in form.fields.payment_option.choices%}
+                {% for value, name in form.fields.payment_option.choices %}
                 <div class="custom-control custom-radio">
                   <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required> 
                   <label class="custom-control-label" for="{{ name }}">{{ name }}</label>
                   {% comment %} {{ form.payment_option }} {% endcomment %}
                 </div>
-                {% endfor   %}
+                {% endfor %}
                 {% comment %} <div class="custom-control custom-radio">
                   <input id="paypal" name="paymentMethod" type="radio" class="custom-control-input" required>
                   <label class="custom-control-label" for="paypal">Paypal</label>
