@@ -61,6 +61,8 @@ class CheckoutView(View):
             return redirect("core:oder-summary")
 
 
+
+
 class PaymentView(View):
     def get(self, *args, **kwargs):
         return render(self.request, "payment.html")
