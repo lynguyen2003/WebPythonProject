@@ -1,550 +1,296 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block extra_head %}
-
 <style>
-              
-                .Action {
-                  padding: var(--p-spacing1) calc(var(--p-spacing1) + var(--p-spacingSm));
-                  background-color: transparent;
-                  font-size: var(--fontSizeXs);
-                  font-weight: var(--fontWeightMedium);
-                  color: var(--colorPrimary);
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
-                }
-                
-                .Action:hover {
-                  background-color: var(--p-colorBackgroundContrastAlpha05);
-                }
-                
-                .Action--tertiary {
-                  color: var(--colorText);
-                }
-                
-                .Action--danger {
-                  color: var(--colorDanger);
-                }
-                
-                .Action:disabled {
-                  color: var(--p-colorPrimaryDisabledText);
-                }
-                
-                .Block {
-                  padding: var(--p-spacing3);
-                  border-radius: var(--borderRadius);
-                  background-color: var(--colorBackground);
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .Button {
-                  padding: var(--p-spacing3);
-                  background-color: var(--colorPrimary);
-                  font-weight: var(--fontWeightMedium);
-                  color: var(--colorPrimaryText);
-                  border-radius: var(--borderRadius);
-                  transition: background 0.15s ease, color 0.15s ease, border 0.15s ease, box-shadow .15s ease;
-                }
-                
-                .Button:hover {
-                  background-color: var(--p-colorPrimaryHover);
-                }
-                
-                .Button:active {
-                  background-color: var(--p-colorPrimaryActive);
-                }
-                
-                .Button:disabled {
-                  background-color: var(--p-colorPrimaryDisabled);
-                  color: var(--p-colorPrimaryDisabledText);
-                }
-                
-                .CheckboxInput {
-                  background-color: var(--colorBackground);
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease;
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .CheckboxInput--checked {
-                  background-color: var(--colorPrimary);
-                  border-color: var(--colorPrimary);
-                }
-                
-                .CodeInput {
-                  background-color: var(--colorBackground);
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .Dropdown {
-                  border-radius: var(--borderRadius);
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04), 0px 10px 24px rgba(0, 0, 0, 0.02);
-                }
-                
-                .DropdownItem {
-                  background-color: var(--colorBackground);
-                  padding: var(--p-spacing2) var(--p-spacing3);
-                }
-                
-                .Error {
-                  margin-top: var(--p-spacing1);
-                  color: var(--colorDanger);
-                  font-weight: var(--fontWeightNormal);
-                  font-size: var(--fontSizeSm);
-                }
-                
-                .Icon {
-                  transition: fill 0.1s ease;
-                }
-                
-                .Input, .p-FauxInput {
-                  padding: var(--p-spacing3);
-                  background-color: var(--colorBackground);
-                  border-radius: var(--borderRadius);
-                  transition: background 0.15s ease, border 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .Input--invalid {
-                  color: var(--colorDanger);
-                  border-color: var(--colorDanger);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), 0 0 0 1px var(--colorDanger);
-                }
-                
-                .Input::placeholder, .p-Input--placeholder {
-                  color: var(--colorTextPlaceholder);
-                }
-                
-                .Input:disabled, .p-Input--disabled {
-                  background-color: var(--p-colorBackgroundDisabled);
-                  color: var(--colorTextPlaceholder);
-                  border-color: var(--p-colorBackgroundDisabledDeemphasize05);
-                  box-shadow: none;
-                }
-                
-                .InputCloseIcon {
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .Label {
-                  margin-bottom: var(--p-spacing1);
-                  font-size: var(--fontSizeSm);
-                  font-weight: var(--fontWeightNormal);
-                  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-                }
-                
-                .Label--resting {
-                  font-size: var(--fontSizeBase);
-                }
-                
-                .Label--floating {
-                  font-size: var(--fontSizeXs);
-                  padding-bottom: max(var(--p-spacingSm), var(--p-spacing1));
-                  opacity: 0.8;
-                }
-                
-                .Menu {
-                  padding: 0.375rem;
-                }
-                
-                .MenuAction {
-                  background-color: var(--p-colorBackgroundContrastAlpha05);
-                  font-size: var(--fontSizeXs);
-                  font-weight: var(--fontWeightMedium);
-                  color: var(--colorPrimary);
-                  border-radius: min(8px, var(--borderRadius));
-                  transition: background 0.15s ease, box-shadow 0.15s ease;
-                }
-                
-                .MenuAction--danger {
-                  color: var(--colorDanger);
-                }
-                
-                .MenuAction:hover {
-                  background-color: var(--p-colorBackgroundContrastAlpha08);
-                }
-                
-                .MenuIcon {
-                  border-radius: min(8px, var(--borderRadius));
-                  transition: background 0.15s ease, box-shadow 0.15s ease;
-                }
-                
-                .MenuIcon:hover {
-                  background-color: var(--p-colorBackgroundContrastAlpha05);
-                }
-                
-                .PasscodeShowIcon {
-                  outline-offset: -2px;
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .PasscodeCloseIcon {
-                  outline-offset: -2px;
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .PickerItem {
-                  padding: var(--p-spacing3);
-                  background-color: var(--colorBackground);
-                  border-radius: var(--borderRadius);
-                  transition: background 0.15s ease, box-shadow 0.15s ease, border 0.15s ease, color 0.15s ease;
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .PickerItem--new {
-                  font-size: var(--fontSizeSm);
-                  font-weight: var(--fontWeightMedium);
-                  color: var(--colorPrimary);
-                }
-                
-                .RedirectText {
-                  color: var(--colorTextSecondary);
-                }
-                
-                .Link {
-                  color: var(--colorPrimary);
-                }
-                
-                .Link:hover {
-                  text-decoration: underline;
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .SecondaryLink {
-                  color: var(--colorTextSecondary);
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .SecondaryLink:hover {
-                  text-decoration: underline;
-                }
-                
-                .Switch {
-                  background-color: var(--p-colorBackgroundDeemphasize10);
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  transition: border 0.3s ease, background 0.2s ease, box-shadow 0.3s ease;
-                }
-                
-                .Switch--checked {
-                  background-color: var(--colorSuccess);
-                  border-color: var(--colorSuccess);
-                }
-                
-                .SwitchControl {
-                  fill: #fff;
-                  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.08);
-                  transition: transform 0.3s ease;
-                }
-                
-                .Tab {
-                  padding: var(--p-spacing3);
-                  background-color: var(--colorBackground);
-                  border-radius: var(--borderRadius);
-                  font-size: var(--fontSizeXs);
-                  font-weight: var(--fontWeightMedium);
-                  color: var(--colorTextSecondary);
-                  transition: background .15s ease, border .15s ease, box-shadow .15s ease;
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .Tab--selected {
-                  border-color: var(--p-colorPrimary);
-                  color: var(--colorPrimary);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), 0 0 0 1px var(--colorPrimary);
-                }
-                
-                .TabLabel {
-                  padding-top: var(--p-spacing1);
-                  transition: color .1s ease;
-                }
-                
-                .TermsText {
-                  color: var(--colorTextSecondary);
-                }
-                
-                .TermsLink {
-                  color: var(--colorTextSecondary);
-                  text-decoration: underline;
-                  border-radius: min(5px, var(--borderRadius));
-                  transition: box-shadow .15s ease;
-                }
-                
-                .AccordionItem {
-                  background-color: var(--colorBackground);
-                  border: 1px solid var(--p-colorBackgroundDeemphasize10);
-                  border-radius: var(--borderRadius);
-                  color: var(--colorTextSecondary);
-                  font-size: var(--fontSizeXs);
-                  font-weight: var(--fontWeightMedium);
-                  padding: var(--p-spacing4);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .AccordionItem--selected {
-                  color: var(--colorPrimary);
-                }
-                
-                .Action:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .Button:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .CheckboxInput:focus, .p-CheckboxInput--focused {
-                  outline: var(--focusOutline);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                }
-                
-                .CodeInput:focus, .p-CodeInput--focused {
-                  outline: var(--focusOutline);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02),  var(--focusBoxShadow);
-                }
-                
-                .DropdownItem--highlight {
-                  background-color: var(--p-colorBackgroundDeemphasize03);
-                }
-                
-                .Input:focus, .p-Input--focused {
-                  outline: var(--focusOutline);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                }
-                
-                .InputCloseIcon:focus-visible {
-                  outline: none;
-                  box-shadow: inset 0 0 0 2px var(--p-colorPrimaryAlpha40);
-                }
-                
-                .MenuAction:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .MenuIcon:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .PasscodeShowIcon:focus-visible {
-                  outline: none;
-                  box-shadow: inset 0 0 0 2px var(--p-colorPrimaryAlpha40);
-                }
-                
-                .PasscodeCloseIcon:focus-visible {
-                  outline: none;
-                  box-shadow: inset 0 0 0 2px var(--p-colorPrimaryAlpha40);
-                }
-                
-                .PickerItem:focus-visible {
-                  outline: var(--focusOutline);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                }
-                
-                .PickerItem:hover, .p-PickerItem--hovered {
-                  background-color: var(--p-colorBackgroundDeemphasize03);
-                  border-color: var(--p-colorBackgroundDeemphasize15);
-                }
-                
-                .PickerItem:hover:focus-visible {
-                  outline: var(--focusOutline);
-                  background-color: var(--p-colorBackgroundDeemphasize03);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                }
-                
-                .PickerItem--selected {
-                  background-color: var(--colorBackground);
-                  border-color: var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .PickerItem--selected:focus-visible {
-                  background-color: var(--colorBackground);
-                  border-color: var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .PickerItem--selected:hover, .p-PickerItem--selectedHovered {
-                  background-color: var(--colorBackground);
-                  border-color: var(--p-colorBackgroundDeemphasize10);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02);
-                }
-                
-                .PickerItem--highlight {
-                  box-shadow: 0 0 0 1px var(--colorPrimary);
-                  border-color: var(--colorPrimary);
-                }
-                
-                .PickerItem--highlight:hover, .p-PickerItem--highlightHovered {
-                  box-shadow: 0 0 0 1px var(--colorPrimary);
-                  border-color: var(--colorPrimary);
-                }
-                
-                .PickerItem--highlight:focus-visible {
-                  outline: var(--focusOutline);
-                  border-color: var(--colorPrimary);
-                  box-shadow: var(--focusBoxShadow), 0 0 0 1px var(--colorPrimary);
-                }
-                
-                .PickerItem--highlight:hover:focus-visible {
-                  outline: var(--focusOutline);
-                  background-color: var(--p-colorBackgroundDeemphasize03);
-                  border-color: var(--colorPrimary);
-                  box-shadow: var(--focusBoxShadow), 0 0 0 1px var(--colorPrimary);
-                }
-                
-                .PickerItem--disabled {
-                  background-color: var(--p-colorBackgroundDisabledDeemphasize05);
-                  border-color: var(--p-colorBackgroundDisabledDeemphasize05);
-                  color: var(--colorTextSecondary);
-                  box-shadow: none;
-                }
-                
-                .PickerItem--disabled:hover, .p-PickerItem--disabledHovered {
-                  background-color: var(--p-colorBackgroundDisabledDeemphasize05);
-                  border-color: var(--p-colorBackgroundDisabledDeemphasize05);
-                  color: var(--colorTextSecondary);
-                  box-shadow: none;
-                }
-                
-                .SecondaryLink:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .Switch:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .Tab:hover {
-                  color: var(--colorText);
-                }
-                
-                .Tab:focus {
-                  outline: var(--focusOutline);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                }
-                
-                .Tab--selected:focus {
-                  border-color: var(--p-colorPrimary);
-                  box-shadow: var(--focusBoxShadow), 0 0 0 1px var(--colorPrimary);
-                }
-                
-                .Tab--selected:hover {
-                  color: var(--colorPrimary);
-                }
-                
-                .TermsLink:focus-visible {
-                  outline: var(--focusOutline);
-                  box-shadow: var(--focusBoxShadow);
-                }
-                
-                .AccordionItem:hover, .p-AccordionItem--hovered {
-                  color: var(--colorText);
-                }
-                
-                .AccordionItem:focus-visible, .p-AccordionItem--focused {
-                  outline: var(--focusOutline);
-                  border-color: var(--p-colorPrimaryAlpha50);
-                  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.03), 0px 3px 6px rgba(0, 0, 0, 0.02), var(--focusBoxShadow);
-                }
-                
-                .AccordionItem--selected:focus-visible {
-                  box-shadow: var(--focusBoxShadow), 0 0 0 1px var(--colorPrimary);
-                }
-                
-                .AccordionItem--selected:hover, .p-AccordionItem--selectedHovered {
-                  color: var(--colorPrimary);
-                }
-              </style>
+
+#stripeBtnLabel {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 16px;
+  font-variant: normal;
+  padding: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 500;
+  display: block;
+}
+
+#stripeBtn {
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  text-decoration: none;
+  color: #fff;
+  background: #32325d;
+  white-space: nowrap;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+  float: left;
+  width: 100%
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+  background-color: #43458b;
+}
+
+.stripe-form {
+  padding: 5px 30px;
+}
+
+#card-errors {
+  height: 20px;
+  padding: 4px 0;
+  color: #fa755a;
+}
+
+.stripe-form-row {
+  width: 100%;
+  float: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.current-card-form {
+  display: none;
+}
+
+</style>
 {% endblock extra_head %}
 
 {% block content %}
 
-  <main>
+  <main >
     <div class="container wow fadeIn">
 
-      <!-- Heading -->
       <h2 class="my-5 h2 text-center">Payment</h2>
 
-      <!--Grid row-->
       <div class="row">
 
-        <!--Grid column-->
         <div class="col-md-12 mb-4">
-
-          <!--Card-->
           <div class="card">
-            <script defer="defer" src="https://js.stripe.com/v3/fingerprinted/js/shared-3a4eca052d63050e0e80fcd4e8021d0c.js"></script>
-            <script defer="defer" src="https://js.stripe.com/v3/fingerprinted/js/elements-inner-payment-4f4917b6aac42b9c446ec7550fb8256a.js"></script>
 
-              <div class="AccordionItem p-AccordionItem p-AccordionItem--selected AccordionItem--selected" data-testid="accordion-item">
-                <div class="p-AccordionHeader" role="heading" aria-level="2">
-                  <button class="p-AccordionButton c-AccordionNegateSpacingHorizontal c-AccordionNegateBorderVertical p-AccordionButton--selected p-AccordionButton--first" type="button" aria-expanded="true" aria-controls="card-panel" value="card">
-                    <div class="p-AccordionButtonVisuals">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="p-AccordionButtonRadio" focusable="false" role="presentation">
-                        <path d="M14.25 8C14.25 11.4518 11.4518 14.25 8 14.25C4.54822 14.25 1.75 11.4518 1.75 8C1.75 4.54822 4.54822 1.75 8 1.75C11.4518 1.75 14.25 4.54822 14.25 8Z" stroke="currentColor" stroke-width="1.5" fill="none"></path>
-                        <circle cx="8" cy="8" r="3.5"></circle>
-                      </svg>
-                    <div class="p-AccordionButtonIconContainer">
-                      <svg class="p-Icon p-Icon--card Icon p-Icon--md TabIcon p-AccordionButtonIcon TabIcon--selected" role="presentation" fill="var(--colorIcon)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 4a2 2 0 012-2h12a2 2 0 012 2H0zm0 2v6a2 2 0 002 2h12a2 2 0 002-2V6H0zm3 5a1 1 0 011-1h1a1 1 0 110 2H4a1 1 0 01-1-1z"></path>
-                      </svg></div></div><span class="p-AccordionButtonText">Card</span>
-                    </button>
+            {% if card %}
+              <div style="padding: 5px 30px;">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="use_default_card" id="use_default_card">
+                  <label class="custom-control-label" for="use_default_card">Use default card:
+                    **** **** **** {{ card.last4 }} 
+                  <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span></label>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="current-card-form">
+              <form action="." method="post" class="stripe-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="use_default" value="true">
+                  <div class="stripe-form-row">
+                    <button id="stripeBtn">Submit Payment</button>
                   </div>
-                  <div class="p-AnimateSinglePresence p-AccordionPanel p-AccordionPanel--selected" id="card-panel" style="">
-                    <div class="p-AnimateSinglePresenceItem">
-                      <div class="p-AccordionPanelContents">
-              <form>
-                <div class="p-Grid p-CardForm">
-                  <div class="p-GridCell p-GridCell--12 p-GridCell--md6">
-                    <div data-field="number" class="p-Field">
-                <label class="p-FieldLabel Label Label--empty" for="Field-numberInput">Card number</label>
-                <div><div class="p-CardNumberInput"><div class="p-Input"><input dir="ltr" type="text" inputmode="numeric" name="number" id="Field-numberInput" placeholder="1234 1234 1234 1234" autocomplete="billing cc-number" aria-invalid="false" aria-required="true" class="p-Input-input Input p-CardNumberInput-input Input--empty p-Input-input--textRight" value="" style="padding-right: 51.2px;"></div><div class="p-CardIcons Input"><div style="position: relative;"><div class="p-CardBrandIcons p-CardBrandIcons--loaded p-CardBrandIcons--multiple"><div class="p-CardBrandIcons-item"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/visa-729c05c240c4bdb47b03ac81d9945bfe.svg"></div><div class="p-CardBrandIcons-item"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/mastercard-4d8844094130711885b5e41b28c9848f.svg"></div><div class="p-CardBrandIcons-item"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/amex-a49b82f46c5cd6a96a6e418a6ca1717c.svg"></div><div class="p-CardBrandIcons-item p-CardBrandIcons-more"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/discover-ac52cd46f89fa40a29a0bfb954e33173.svg"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/diners-fbcbd3360f8e3f629cdaa80e93abdb8b.svg"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/jcb-271fd06e6e7a2c52692ffa91a95fb64f.svg"><img class="p-CardBrandIcon p-CardBrandIcon--visible" alt="" src="https://js.stripe.com/v3/fingerprinted/img/unionpay-8a10aefc7295216c338ba4e1224627a1.svg"><img class="p-CardBrandIcon" alt="" src="https://js.stripe.com/v3/fingerprinted/img/elo-efe873e884e6c9eb817f23a120caaa3e.svg"></div></div><div class="p-CardKnownIcon"></div><div class="p-CardErrorIcon"><svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="var(--colorIconCardError)" role="presentation"><path opacity=".4" fill-rule="evenodd" clip-rule="evenodd" d="M15.337 4A5.5 5.5 0 1023 11.663V18a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2h12.337zm6.707.293c.239.202.46.424.662.663a2.01 2.01 0 00-.662-.663zM3 9a1 1 0 011-1h5a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V9z"></path><path opacity=".6" fill-rule="evenodd" clip-rule="evenodd" d="M4 15a1 1 0 100 2h1.5a1 1 0 100-2H4zm4.8 0a1 1 0 100 2h1.5a1 1 0 100-2H8.8zm3.8 1a1 1 0 011-1h1.5a1 1 0 110 2h-1.5a1 1 0 01-1-1zm5.9-1a1 1 0 100 2H20a1 1 0 100-2h-1.5z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 14a5.5 5.5 0 110-11 5.5 5.5 0 010 11zm0-1.719a1.031 1.031 0 100-2.062 1.031 1.031 0 000 2.062zm0-7.906a.687.687 0 00-.688.688V8.5a.687.687 0 101.375 0V5.062a.687.687 0 00-.687-.687z"></path></svg></div></div></div></div></div></div></div><div class="p-GridCell p-GridCell--6 p-GridCell--md3"><div data-field="expiry" class="p-Field"><label class="p-FieldLabel Label Label--empty" for="Field-expiryInput">Expiration</label><div><div class="p-Input"><input dir="ltr" type="text" inputmode="numeric" name="expiry" id="Field-expiryInput" placeholder="MM / YY" autocomplete="billing cc-exp" aria-invalid="false" aria-required="true" class="p-Input-input Input Input--empty p-Input-input--textRight" value=""></div></div></div></div><div class="p-GridCell p-GridCell--6 p-GridCell--md3"><div data-field="cvc" class="p-Field"><label class="p-FieldLabel Label Label--empty" for="Field-cvcInput">CVC</label><div><div class="p-CardCvcInput"><div class="p-Input"><input dir="ltr" type="text" inputmode="numeric" name="cvc" id="Field-cvcInput" placeholder="CVC" autocomplete="billing cc-csc" aria-invalid="false" aria-required="true" class="p-Input-input Input Input--empty p-Input-input--textRight" value=""></div><div class="p-CardCvcIcons Input"><div class="p-CardCvcIcons-group c-InputPadding"><svg class="p-CardCvcIcons-svg" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="var(--colorIconCardCvc)" role="presentation"><path opacity=".2" fill-rule="evenodd" clip-rule="evenodd" d="M15.337 4A5.493 5.493 0 0013 8.5c0 1.33.472 2.55 1.257 3.5H4a1 1 0 00-1 1v1a1 1 0 001 1h16a1 1 0 001-1v-.6a5.526 5.526 0 002-1.737V18a2 2 0 01-2 2H3a2 2 0 01-2-2V6a2 2 0 012-2h12.337zm6.707.293c.239.202.46.424.662.663a2.01 2.01 0 00-.662-.663z"></path><path opacity=".4" fill-rule="evenodd" clip-rule="evenodd" d="M13.6 6a5.477 5.477 0 00-.578 3H1V6h12.6z"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M18.5 14a5.5 5.5 0 110-11 5.5 5.5 0 010 11zm-2.184-7.779h-.621l-1.516.77v.786l1.202-.628v3.63h.943V6.22h-.008zm1.807.629c.448 0 .762.251.762.613 0 .393-.37.668-.904.668h-.235v.668h.283c.565 0 .95.282.95.691 0 .393-.377.66-.911.66-.393 0-.786-.126-1.194-.37v.786c.44.189.88.291 1.312.291 1.029 0 1.736-.526 1.736-1.288 0-.535-.33-.967-.88-1.14.472-.157.778-.573.778-1.045 0-.738-.652-1.241-1.595-1.241a3.143 3.143 0 00-1.234.267v.77c.378-.212.763-.33 1.132-.33zm3.394 1.713c.574 0 .974.338.974.778 0 .463-.4.785-.974.785-.346 0-.707-.11-1.076-.337v.809c.385.173.778.26 1.163.26.204 0 .392-.032.573-.08a4.313 4.313 0 00.644-2.262l-.015-.33a1.807 1.807 0 00-.967-.252 3 3 0 00-.448.032V6.944h1.132a4.423 4.423 0 00-.362-.723h-1.587v2.475a3.9 3.9 0 01.943-.133z"></path></svg></div></div></div></div></div></div></div><div class="p-Grid p-BillingAddressForm u-mt-grid"><div class="p-GridCell p-GridCell--12 p-GridCell--sm12"><div data-field="country" class="p-Field"><label class="p-FieldLabel Label" for="Field-countryInput">Country</label><div><div class="p-Select"><select name="country" id="Field-countryInput" autocomplete="billing country" inputmode="text" aria-invalid="false" aria-required="true" class="Input p-Select-select"><option disabled="" value="">Select</option><option value="AF">Afghanistan</option><option value="AX">Åland Islands</option><option value="AL">Albania</option><option value="DZ">Algeria</option><option value="AD">Andorra</option><option value="AO">Angola</option><option value="AI">Anguilla</option><option value="AQ">Antarctica</option><option value="AG">Antigua &amp; Barbuda</option><option value="AR">Argentina</option><option value="AM">Armenia</option><option value="AW">Aruba</option><option value="AC">Ascension Island</option><option value="AU">Australia</option><option value="AT">Austria</option><option value="AZ">Azerbaijan</option><option value="BS">Bahamas</option><option value="BH">Bahrain</option><option value="BD">Bangladesh</option><option value="BB">Barbados</option><option value="BY">Belarus</option><option value="BE">Belgium</option><option value="BZ">Belize</option><option value="BJ">Benin</option><option value="BM">Bermuda</option><option value="BT">Bhutan</option><option value="BO">Bolivia</option><option value="BA">Bosnia &amp; Herzegovina</option><option value="BW">Botswana</option><option value="BV">Bouvet Island</option><option value="BR">Brazil</option><option value="IO">British Indian Ocean Territory</option><option value="VG">British Virgin Islands</option><option value="BN">Brunei</option><option value="BG">Bulgaria</option><option value="BF">Burkina Faso</option><option value="BI">Burundi</option><option value="KH">Cambodia</option><option value="CM">Cameroon</option><option value="CA">Canada</option><option value="CV">Cape Verde</option><option value="BQ">Caribbean Netherlands</option><option value="KY">Cayman Islands</option><option value="CF">Central African Republic</option><option value="TD">Chad</option><option value="CL">Chile</option><option value="CN">China</option><option value="CO">Colombia</option><option value="KM">Comoros</option><option value="CG">Congo - Brazzaville</option><option value="CD">Congo - Kinshasa</option><option value="CK">Cook Islands</option><option value="CR">Costa Rica</option><option value="CI">Côte d’Ivoire</option><option value="HR">Croatia</option><option value="CW">Curaçao</option><option value="CY">Cyprus</option><option value="CZ">Czechia</option><option value="DK">Denmark</option><option value="DJ">Djibouti</option><option value="DM">Dominica</option><option value="DO">Dominican Republic</option><option value="EC">Ecuador</option><option value="EG">Egypt</option><option value="SV">El Salvador</option><option value="GQ">Equatorial Guinea</option><option value="ER">Eritrea</option><option value="EE">Estonia</option><option value="SZ">Eswatini</option><option value="ET">Ethiopia</option><option value="FK">Falkland Islands</option><option value="FO">Faroe Islands</option><option value="FJ">Fiji</option><option value="FI">Finland</option><option value="FR">France</option><option value="GF">French Guiana</option><option value="PF">French Polynesia</option><option value="TF">French Southern Territories</option><option value="GA">Gabon</option><option value="GM">Gambia</option><option value="GE">Georgia</option><option value="DE">Germany</option><option value="GH">Ghana</option><option value="GI">Gibraltar</option><option value="GR">Greece</option><option value="GL">Greenland</option><option value="GD">Grenada</option><option value="GP">Guadeloupe</option><option value="GU">Guam</option><option value="GT">Guatemala</option><option value="GG">Guernsey</option><option value="GN">Guinea</option><option value="GW">Guinea-Bissau</option><option value="GY">Guyana</option><option value="HT">Haiti</option><option value="HN">Honduras</option><option value="HK">Hong Kong SAR China</option><option value="HU">Hungary</option><option value="IS">Iceland</option><option value="IN">India</option><option value="ID">Indonesia</option><option value="IQ">Iraq</option><option value="IE">Ireland</option><option value="IM">Isle of Man</option><option value="IL">Israel</option><option value="IT">Italy</option><option value="JM">Jamaica</option><option value="JP">Japan</option><option value="JE">Jersey</option><option value="JO">Jordan</option><option value="KZ">Kazakhstan</option><option value="KE">Kenya</option><option value="KI">Kiribati</option><option value="XK">Kosovo</option><option value="KW">Kuwait</option><option value="KG">Kyrgyzstan</option><option value="LA">Laos</option><option value="LV">Latvia</option><option value="LB">Lebanon</option><option value="LS">Lesotho</option><option value="LR">Liberia</option><option value="LY">Libya</option><option value="LI">Liechtenstein</option><option value="LT">Lithuania</option><option value="LU">Luxembourg</option><option value="MO">Macao SAR China</option><option value="MG">Madagascar</option><option value="MW">Malawi</option><option value="MY">Malaysia</option><option value="MV">Maldives</option><option value="ML">Mali</option><option value="MT">Malta</option><option value="MQ">Martinique</option><option value="MR">Mauritania</option><option value="MU">Mauritius</option><option value="YT">Mayotte</option><option value="MX">Mexico</option><option value="MD">Moldova</option><option value="MC">Monaco</option><option value="MN">Mongolia</option><option value="ME">Montenegro</option><option value="MS">Montserrat</option><option value="MA">Morocco</option><option value="MZ">Mozambique</option><option value="MM">Myanmar (Burma)</option><option value="NA">Namibia</option><option value="NR">Nauru</option><option value="NP">Nepal</option><option value="NL">Netherlands</option><option value="NC">New Caledonia</option><option value="NZ">New Zealand</option><option value="NI">Nicaragua</option><option value="NE">Niger</option><option value="NG">Nigeria</option><option value="NU">Niue</option><option value="MK">North Macedonia</option><option value="NO">Norway</option><option value="OM">Oman</option><option value="PK">Pakistan</option><option value="PS">Palestinian Territories</option><option value="PA">Panama</option><option value="PG">Papua New Guinea</option><option value="PY">Paraguay</option><option value="PE">Peru</option><option value="PH">Philippines</option><option value="PN">Pitcairn Islands</option><option value="PL">Poland</option><option value="PT">Portugal</option><option value="PR">Puerto Rico</option><option value="QA">Qatar</option><option value="RE">Réunion</option><option value="RO">Romania</option><option value="RU">Russia</option><option value="RW">Rwanda</option><option value="WS">Samoa</option><option value="SM">San Marino</option><option value="ST">São Tomé &amp; Príncipe</option><option value="SA">Saudi Arabia</option><option value="SN">Senegal</option><option value="RS">Serbia</option><option value="SC">Seychelles</option><option value="SL">Sierra Leone</option><option value="SG">Singapore</option><option value="SX">Sint Maarten</option><option value="SK">Slovakia</option><option value="SI">Slovenia</option><option value="SB">Solomon Islands</option><option value="SO">Somalia</option><option value="ZA">South Africa</option><option value="GS">South Georgia &amp; South Sandwich Islands</option><option value="KR">South Korea</option><option value="SS">South Sudan</option><option value="ES">Spain</option><option value="LK">Sri Lanka</option><option value="BL">St. Barthélemy</option><option value="SH">St. Helena</option><option value="KN">St. Kitts &amp; Nevis</option><option value="LC">St. Lucia</option><option value="MF">St. Martin</option><option value="PM">St. Pierre &amp; Miquelon</option><option value="VC">St. Vincent &amp; Grenadines</option><option value="SR">Suriname</option><option value="SJ">Svalbard &amp; Jan Mayen</option><option value="SE">Sweden</option><option value="CH">Switzerland</option><option value="TW">Taiwan</option><option value="TJ">Tajikistan</option><option value="TZ">Tanzania</option><option value="TH">Thailand</option><option value="TL">Timor-Leste</option><option value="TG">Togo</option><option value="TK">Tokelau</option><option value="TO">Tonga</option><option value="TT">Trinidad &amp; Tobago</option><option value="TA">Tristan da Cunha</option><option value="TN">Tunisia</option><option value="TR">Turkey</option><option value="TM">Turkmenistan</option><option value="TC">Turks &amp; Caicos Islands</option><option value="TV">Tuvalu</option><option value="UG">Uganda</option><option value="UA">Ukraine</option><option value="AE">United Arab Emirates</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="UY">Uruguay</option><option value="UZ">Uzbekistan</option><option value="VU">Vanuatu</option><option value="VA">Vatican City</option><option value="VE">Venezuela</option><option value="VN">Vietnam</option><option value="WF">Wallis &amp; Futuna</option><option value="EH">Western Sahara</option><option value="YE">Yemen</option><option value="ZM">Zambia</option><option value="ZW">Zimbabwe</option></select><div class="p-InputIcon c-InputPadding c-InputFontSize c-InputFontColor c-InputTransparentBorder"><svg viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" focusable="false" role="presentation" style="width: 0.8em; height: 0.8em;"><path d="M10.193 3.97a.75.75 0 0 1 1.062 1.062L6.53 9.756a.75.75 0 0 1-1.06 0L.745 5.032A.75.75 0 0 1 1.807 3.97L6 8.163l4.193-4.193z" fill="var(--colorIconChevronDown)" fill-rule="evenodd"></path></svg></div></div></div></div></div></div><button tabindex="-1" aria-hidden="true" type="submit" style="opacity: 0; pointer-events: none; height: 2px; width: 2px; position: absolute; top: -2px;"></button>
+                  <div id="card-errors" role="alert"></div>
               </form>
             </div>
+
+            <div class="new-card-form">
+              <form action="." method="post" class="stripe-form" id="stripe-form">
+                  {% csrf_token %}
+                  <div class="stripe-form-row" id="creditCard">
+                      <label for="card-element" id="stripeBtnLabel">
+                          Credit or debit card
+                      </label>
+                      <div class="CardPaymentDemo-element Box-root Padding-top--12 Padding-right--12 Padding-left--12"><div class="StripeElement StripeElement--empty"><div class="__PrivateStripeElement" style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;"><iframe name="__privateStripeFrame72483" frameborder="0" allowtransparency="true" scrolling="no" role="presentation" allow="payment *" src="https://js.stripe.com/v3/elements-inner-card-3b2a63149c3878ef7c2051ad6ead70f7.html#wait=false&amp;mids[guid]=ce2307bc-8386-4ec4-9fde-082e82208e64a7365c&amp;mids[muid]=3a6757d2-4196-46ee-a21e-25ff3fa3080bc6d86a&amp;mids[sid]=eaeabf4e-16ef-4883-b2db-c0ce7510d91a877931&amp;style[base][color]=%2332325d&amp;style[base][fontFamily]=%22Helvetica+Neue%22%2C+Helvetica%2C+sans-serif&amp;style[base][fontSmoothing]=antialiased&amp;style[base][fontSize]=14px&amp;style[invalid][color]=%23fa755a&amp;style[invalid][iconColor]=%23fa755a&amp;rtl=false&amp;componentName=card&amp;keyMode=test&amp;apiKey=pk_test_TYooMQauvdEDq54NiTphI7jx&amp;referrer=https%3A%2F%2Fstripe.com%2Fdocs%2Fpayments%2Faccept-card-payments%3Fplatform%3Dweb%26ui%3Delements&amp;controllerId=__privateStripeController72478" title="Secure card payment input frame" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; user-select: none !important; transform: translate(0px) !important; color-scheme: light only !important; height: 16.8px;"></iframe><input class="__PrivateStripeElement-input" aria-hidden="true" aria-label=" " autocomplete="false" maxlength="1" style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: -1px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;"></div></div>
+                    </div>
+                  </div>  
+                  <div class="stripe-form-row">
+                    <button id="stripeBtn">Submit Payment</button>
+                  </div>
+                  <div class="stripe-form-row">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="save" id="save_card_info">
+                      <label class="custom-control-label" for="save_card_info">Save for future purchases</label>
+                    </div>
+                  </div>
+                  <div id="card-errors" role="alert"></div>
+              </form>
+            </div>
+
           </div>
         </div>
-      </div>
-          <!--/.Card-->
 
-        </div>
-        <!--Grid column-->
+            <!--Grid column-->
+            <div class="col-md-12 mb-4">
+
+              <!-- Heading -->
+              <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Your cart</span>
+                <span class="badge badge-secondary badge-pill">{{ order.items.count }}</span>
+              </h4>
+    
+              <!-- Cart -->
+              <ul class="list-group mb-3 z-depth-1">
+                {% for order_item in order.items.all %}
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                  <div>
+                    <h6 class="my-0">{{ order_item.quantity}} x {{ order_item.item.title }}</h6>
+                    <small class="text-muted">{{ order_item.item.description }}</small>
+                  </div>
+                  <span class="text-muted">${{ order_item.get_final_price }}</span>
+                </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                  <div class="text-success">
+                    <h6 class="my-0">Promo code</h6>
+                    <small>EXAMPLECODE</small>
+                  </div>
+                  <span class="text-success">-$5</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total (USD)</span>
+                  <strong>${{ order.get_total }}</strong>
+                </li>
+              </ul>
+              <!-- Cart -->
+    
+    
+            <!--Grid column-->
+
 
       </div>
-      <!--Grid row-->
 
     </div>
   </main>
 
-
-
-  <!--Main layout-->
-
 {% endblock content %}
 
+{% block extra_scripts %}
 
+<script src="https://js.stripe.com/v3/"></script>
+<script nonce="">  // Create a Stripe client.
+  var stripe = Stripe('{{STRIPE_PUBLIC_KEY}}');
+
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('stripe-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('stripe-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    // Submit the form
+    form.submit();
+  }
+
+  var currentCardForm = $('.current-card-form');
+  var newCardForm = $('.new-card-form');
+  var use_default_card = document.querySelector("input[name=use_default_card]");
+  use_default_card.addEventListener('change', function() {
+    if (this.checked) {
+      newCardForm.hide();
+      currentCardForm.show()
+    } else {
+      newCardForm.show();
+      currentCardForm.hide()
+    }
+  })
+
+</script>
+
+{% endblock extra_scripts %}
