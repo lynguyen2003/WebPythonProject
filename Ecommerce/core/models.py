@@ -1,20 +1,33 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import Sum
-from django.urls import reverse
+from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
+CATEGORY_CHOICES = (
+    ('S', 'Shirt'),
+    ('SW', 'Sport wear'),
+    ('OW', 'Outwear')
+)
+
+LABEL_CHOICES = (
+    ('P', 'primary'),
+    ('S', 'secondary'),
+    ('D', 'danger')
+)
 
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2, blank=True, null=True)
+    label = models.CharField(choices=LABEL_CHOICES, max_length=1, blank=True, null=True)
     slug = models.SlugField()
     description = models.TextField()
+    image = models.ImageField()
 
     
-
     def __str__(self):
         return self.title
 
@@ -100,6 +113,8 @@ class Payment(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
 
 
 
